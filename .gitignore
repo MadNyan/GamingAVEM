@@ -122,3 +122,15 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+GamingAVEM.sln
+
+.vs/
+
+GamingAVEM/GamingAVEM.pyproj
+
+bat/
+
+GamingAVEM/results/
+
+GamingAVEM/classifier/
