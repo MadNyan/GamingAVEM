@@ -47,7 +47,7 @@ def capture_audio_file(input_path, output_path, sampling=None):
         print('capture_audio ' + output_path + ' Error')
 
 if __name__ == '__main__':
-    ORDERS = ['ENTERFACE','BAUM1S','BAUM1A','SAVEE','RAVDESS']
+    ORDERS = ['ENTERFACE','BAUM1S','BAUM1A','SAVEE','RAVDESS','GAVE']
     for order in ORDERS:
         input_path = get_data_path(order)
         output_path = get_audio_data_path(order)

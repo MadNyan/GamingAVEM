@@ -15,9 +15,9 @@ from src.train.trainerFusion import trainerFusion
 
 if __name__ == '__main__': 
     
-    model = 'FAN'
+    model = 'Lstm'
     results_path = './results/test'
-    dataset_name = 'ENTERFACE_FSIM_FRAMES_COUNT'
+    dataset_name = 'GAVE_AU'
     epochs = 1
     batch_size = 64
     learn_rate = 1e-4

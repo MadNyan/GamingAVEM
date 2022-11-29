@@ -146,7 +146,7 @@ class trainerWav2vec2(trainer):
             model_id,
             config=config,
         )
-        self.model.freeze_feature_extractor()
+        #self.model.freeze_feature_extractor()
 
     def init_loss(self):
         self.loss_func = nn.CrossEntropyLoss()

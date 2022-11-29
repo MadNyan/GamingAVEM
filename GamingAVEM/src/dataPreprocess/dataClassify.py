@@ -5,7 +5,7 @@ from src.common.utilities import *
 
 FFMPEG = 'C:/ffmpeg-4.2.1-win-64/ffmpeg.exe'
  
-def classify_EMO_DB(input_path = 'D:/Adair/emotion_data/OriginalData/EMO_DB/wav/'): 
+def classify_EMO_DB(input_path = 'D:/Adair/emotion_data/originalData/EMO_DB/wav/'): 
     for file_name in os.listdir(input_path): 
  
         lab = EMO_DB_LABEL(file_name[5]) 
@@ -32,7 +32,7 @@ def EMO_DB_LABEL(x):
         'N':'ne', 
     }.get(x, 'not') 
  
-def classify_savee(input_path = 'D:/Adair/emotion_data/OriginalData/savee/AudioVisualClip/'): 
+def classify_savee(input_path = 'D:/Adair/emotion_data/originalData/savee/AudioVisualClip/'): 
     dirs = ('DC', 'JE', 'JK', 'KL') 
  
     for dir in dirs: 
@@ -52,9 +52,8 @@ def classify_savee(input_path = 'D:/Adair/emotion_data/OriginalData/savee/AudioV
          
             print(input_file + '\n') 
             print(output_file + '\n')
-
-            if os.path.isfile(output_file) != True:
-                copyfile(input_file, output_file) 
+            
+            copyfile(input_file, output_file) 
  
 def SAVEE_DB_LABEL(x): 
     return{ 
@@ -65,7 +64,7 @@ def SAVEE_DB_LABEL(x):
         'n':'ne', 
     }.get(x, 'not') 
  
-def classify_BAUM1S(input_path = 'D:/Adair/emotion_data/OriginalData/BAUM1/'): 
+def classify_BAUM1S(input_path = 'D:/Adair/emotion_data/originalData/BAUM1/'): 
     csv_path = input_path + 'Annotations_BAUM1s.csv' 
     f = open(csv_path) 
     csv = f.read() 
@@ -100,8 +99,7 @@ def classify_BAUM1S(input_path = 'D:/Adair/emotion_data/OriginalData/BAUM1/'):
         print(input_file + '\n') 
         print(output_file + '\n') 
         
-        if os.path.isfile(output_file) != True:
-            copyfile(input_file, output_file)
+        copyfile(input_file, output_file)
 
 def BAUM1S_DB_LABEL(x): 
     return{ 
@@ -120,7 +118,7 @@ def BAUM1S_DB_LABEL(x):
         '13':'un',
     }.get(x, 'not') 
  
-def classify_BAUM1A(input_path = 'D:/Adair/emotion_data/OriginalData/BAUM1/'): 
+def classify_BAUM1A(input_path = 'D:/Adair/emotion_data/originalData/BAUM1/'): 
     csv_path = input_path + 'Annotations_BAUM1a.csv' 
     f = open(csv_path) 
     csv = f.read() 
@@ -155,7 +153,7 @@ def classify_BAUM1A(input_path = 'D:/Adair/emotion_data/OriginalData/BAUM1/'):
         print(input_file + '\n') 
         print(output_file + '\n') 
         
-        if os.path.isfile(input_file) == True and os.path.isfile(output_file) != True:
+        if os.path.isfile(input_file) == True:
             copyfile(input_file, output_file)
 
 def BAUM1A_DB_LABEL(x): 
@@ -171,7 +169,7 @@ def BAUM1A_DB_LABEL(x):
         '9':'un',
     }.get(x, 'not') 
 
-def classify_enterface(input_path = 'D:/Adair/emotion_data/OriginalData/enterface/'): 
+def classify_enterface(input_path = 'D:/Adair/emotion_data/originalData/enterface/'): 
     for sub_name in os.listdir(input_path): 
         sub = sub_name.split(' ')[1] 
         for lab_name in os.listdir(input_path + sub_name + '/'):
@@ -205,9 +203,8 @@ def classify_enterface(input_path = 'D:/Adair/emotion_data/OriginalData/enterfac
                              
                         print(input_file + '\n') 
                         print(output_file + '\n') 
-
-                        if os.path.isfile(output_file) != True:
-                            copyfile(input_file, output_file)
+                        
+                        copyfile(input_file, output_file)
 
 def ENTERFACE_DB_LABEL(x): 
     return{ 
@@ -219,7 +216,7 @@ def ENTERFACE_DB_LABEL(x):
         'surprise':'su',
     }.get(x, 'not') 
 
-def classify_RAVDESS(input_path = 'D:/Adair/emotion_data/OriginalData/RAVDESS/Video_Speech_Actor_Data/'): 
+def classify_RAVDESS(input_path = 'D:/Adair/emotion_data/originalData/RAVDESS/Video_Speech_Actor_Data/'): 
     for dir_name in os.listdir(input_path): 
         for file_name in os.listdir(input_path + dir_name + '/'):
             if ('.mp4' in file_name) and (file_name.split('-')[0] == '01'):
@@ -234,9 +231,8 @@ def classify_RAVDESS(input_path = 'D:/Adair/emotion_data/OriginalData/RAVDESS/Vi
 
                 print(input_file + '\n') 
                 print(output_file + '\n')
-
-                if os.path.isfile(output_file) != True:
-                    copyfile(input_file, output_file)
+                
+                copyfile(input_file, output_file)
 
 def RAVDESS_DB_LABEL(x): 
     return{ 
@@ -248,15 +244,57 @@ def RAVDESS_DB_LABEL(x):
         '06':'fe',
         '07':'di',
         '08':'su',
+    }.get(x, 'not')
+
+def classify_GAVE(input_path = 'D:/Adair/emotion_data/originalData/GAVE'): 
+    for file_name in os.listdir(input_path):
+        if '.mp4' in file_name:
+            lab_name = file_name.split('_')[2]
+
+            lab = GAVE_DB_LABEL(lab_name)
+            output_path = GAVE_DATA_PATH + lab + '/'
+            make_dirs(output_path)
+
+            input_file = input_path + '/' + file_name
+            output_file = os.path.abspath(output_path + file_name) 
+
+            print(input_file + '\n') 
+            print(output_file + '\n')
+            
+            copyfile(input_file, output_file)
+
+def GAVE_DB_LABEL1(x): 
+    return{ 
+        '01':'an',
+        '02':'ha',
+        '03':'sa',
+        '04':'su',
+        '05':'bor',
+        '06':'ca',
+        '07':'conte',
+        '08':'fru',
+    }.get(x, 'not') 
+
+def GAVE_DB_LABEL(x): 
+    return{ 
+        '01':'an',
+        '02':'de',
+        '03':'sa',
+        '04':'su',
+        '05':'co',
+        '06':'fl',
+        '07':'ex',
+        '08':'fr',
     }.get(x, 'not') 
 
 def copyfile(input_path, output_path, start_time=0, end_time=10):
     output_path = output_path.replace('.avi', '.mp4').replace('.AVI', '.mp4')
-    with VideoFileClip(input_path) as video:
-        video_clip = video
-        if video.duration > end_time:
-            video_clip = video.subclip(start_time, end_time)
-        video_clip.write_videofile(output_path, fps=30, codec="libx264")
+    if os.path.isfile(output_path) != True:
+        with VideoFileClip(input_path) as video:
+            video_clip = video
+            if video.duration > end_time:
+                video_clip = video.subclip(start_time, end_time)
+            video_clip.write_videofile(output_path, fps=30, codec="libx264")
 
 if __name__ == '__main__':
     #classify_EMO_DB()
@@ -268,6 +306,7 @@ if __name__ == '__main__':
     classify_BAUM1A()
     classify_enterface()
     classify_RAVDESS()
+    classify_GAVE()
 
     #input_path = 'D:/Adair/emotion_data/OriginalData/RAVDESS/Audio_Speech_Actors_01-24/'
     #for dir_name in os.listdir(input_path): 

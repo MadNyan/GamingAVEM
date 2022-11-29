@@ -30,7 +30,10 @@ RAVDESS_LABELS = ('an', 'ha', 'sa', 'su', 'di', 'fe', 'ne', 'ca')
 #RAVDESS_LABELS = ('an', 'ha', 'sa', 'su', 'di', 'fe', 'ne')
 # anger, happiness, sadness, surprise, boredom, calm(serious), contented, frustration
 # 憤怒、快樂、悲傷、驚訝、無聊、平靜(嚴肅)、滿足、沮喪
-GAVE_LABELS = ('an', 'ha', 'sa', 'su', 'bor', 'ca', 'conte', 'fru')
+GAVE_LABELS = ('an', 'ha', 'sa', 'su', 'bor', 'ca', 'conte', 'fr')
+# anger, delightful, sad, surprised, confused, flow, excitation, frustration
+# 憤怒、愉悅、悲傷、驚訝、困惑、專注、興奮、沮喪
+GAVE_LABELS = ('an', 'de', 'sa', 'su', 'co', 'fl', 'ex', 'fr')
 
 EMO_LABELS = ('an', 'di', 'fe', 'ha', 'sa', 'bo', 'ne')
 CK_LABELS = ('an', 'di', 'fe', 'ha', 'sa', 'su')
@@ -80,6 +83,10 @@ SAVEE_VISUAL_DATA_PATH = VISUAL_DATA_PATH + 'savee/'
 RAVDESS_DATA_PATH = AUDIO_VISUAL_DATA_PATH + 'RAVDESS/'
 RAVDESS_AUDIO_DATA_PATH = AUDIO_DATA_PATH + 'RAVDESS/'
 RAVDESS_VISUAL_DATA_PATH = VISUAL_DATA_PATH + 'RAVDESS/'
+
+GAVE_DATA_PATH = AUDIO_VISUAL_DATA_PATH + 'GAVE/'
+GAVE_AUDIO_DATA_PATH = AUDIO_DATA_PATH + 'GAVE/'
+GAVE_VISUAL_DATA_PATH = VISUAL_DATA_PATH + 'GAVE/'
 
 EMO_DATA_PATH = AUDIO_DATA_PATH + 'EMO_DB/'
 CK_DATA_PATH = VISUAL_DATA_PATH + 'CK+/'
@@ -192,6 +199,8 @@ def get_data_labels(Datasets):
     elif 'RAVDESS' in Datasets:
         labels = RAVDESS_LABELS
         #labels = ENTERFACE_LABELS 
+    elif 'GAVE' in Datasets:
+        labels = GAVE_LABELS
     elif Datasets == 'EMO':
         labels = EMO_LABELS
     elif Datasets == 'CK+':
@@ -210,6 +219,8 @@ def get_dataset_name(Datasets):
         dataset_name = 'SAVEE'
     elif 'RAVDESS' in Datasets:
         dataset_name = 'RAVDESS'
+    elif 'GAVE' in Datasets:
+        dataset_name = 'GAVE'
     return dataset_name
 
 def get_data_path(Datasets):
@@ -224,6 +235,8 @@ def get_data_path(Datasets):
         path = SAVEE_DATA_PATH
     elif 'RAVDESS' in Datasets:
         path = RAVDESS_DATA_PATH
+    elif 'GAVE' in Datasets:
+        path = GAVE_DATA_PATH
     return path
 
 def get_audio_data_path(Datasets):
@@ -238,6 +251,8 @@ def get_audio_data_path(Datasets):
         path = SAVEE_AUDIO_DATA_PATH
     elif 'RAVDESS' in Datasets:
         path = RAVDESS_AUDIO_DATA_PATH
+    elif 'GAVE' in Datasets:
+        path = GAVE_AUDIO_DATA_PATH
     elif Datasets == 'EMO':
         path = EMO_DATA_PATH
     return path
@@ -254,6 +269,8 @@ def get_visual_data_path(Datasets):
         path = SAVEE_VISUAL_DATA_PATH
     elif 'RAVDESS' in Datasets:
         path = RAVDESS_VISUAL_DATA_PATH
+    elif 'GAVE' in Datasets:
+        path = GAVE_VISUAL_DATA_PATH
     else:
         return ''
 
