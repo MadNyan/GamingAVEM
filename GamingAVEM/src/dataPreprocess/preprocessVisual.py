@@ -505,12 +505,13 @@ def bind_visual_npys(input_path=ENTERFACE_VISUAL_NPY_DATA_PATH, output_path=ENTE
     np.save(y_path, labels)
     print('ended capturing')
 
-def create_video(output_path='', frames=[], resize_x=224, resize_y=224):
-    # 使用 OpenCV 將圖像轉換成影片
-    out = cv2.VideoWriter(output_path, cv2.VideoWriter_fourcc(*'MP4V'), 30, (resize_x, resize_y))
-    for frame in frames:
-        out.write(frame)
-    out.release()
+def create_video(output_path='', frames=[]):
+    if len(frames) > 0:
+        # 使用 OpenCV 將圖像轉換成影片
+        out = cv2.VideoWriter(output_path, cv2.VideoWriter_fourcc(*'MP4V'), 30, (frames[0].shape[1], frames[0].shape[0]))
+        for frame in frames:
+            out.write(frame)
+        out.release()
 
 def get_mean_gray_scale(image):
     m, n, _ = image.shape
