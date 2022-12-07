@@ -290,11 +290,8 @@ def get_visual_data_path(Datasets):
         path = path + VISUAL_SIZE_60x60_DATA_PATH
     elif '64x64' in Datasets:
         path = path + VISUAL_SIZE_64x64_DATA_PATH
-
     
-    if '_AU' in Datasets:
-        path = path + VISUAL_AU_DATA_PATH
-    elif '_AU_HISTOGRAM_FRAMES_COUNT' in Datasets:
+    if '_AU_HISTOGRAM_FRAMES_COUNT' in Datasets:
         path = path + VISUAL_AU_HISTOGRAM_FRAMES_COUNT_DATA_PATH
     elif '_AU_FSIM_FRAMES_COUNT' in Datasets:
         path = path + VISUAL_AU_FSIM_FRAMES_COUNT_DATA_PATH
@@ -309,7 +306,9 @@ def get_visual_data_path(Datasets):
     elif '_AU_SSIM' in Datasets:
         path = path + VISUAL_AU_SSIM_DATA_PATH
     elif '_AU_FSM' in Datasets:
-        path = path + VISUAL_AU_FSM_DATA_PATH 
+        path = path + VISUAL_AU_FSM_DATA_PATH        
+    elif '_AU' in Datasets:
+        path = path + VISUAL_AU_DATA_PATH
     elif '_HISTOGRAM_REVERSE' in Datasets:
         path = path + VISUAL_NPY_HISTOGRAM_REVERSE_DATA_PATH
     elif '_FSIM_REVERSE' in Datasets:

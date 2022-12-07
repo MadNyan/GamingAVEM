@@ -438,7 +438,11 @@ def capture_visual_npy(input_path='', output_path='', file_name='default', time_
             rgb_output_path = output_path + file_name + '_rgb/'
             make_dirs(rgb_output_path)
             cv2.imwrite(rgb_output_path + 'output' + str(indexes[i]) + '.png', key_frames[i])
-            new_video_frames.append(key_frames[i])
+
+            rgb_output_path = output_path + file_name + '_video/'
+            make_dirs(rgb_output_path)
+            cv2.imwrite(rgb_output_path + 'output' + str(indexes[i]) + '.png', video_frames[indexes[i]])
+            new_video_frames.append(video_frames[indexes[i]])
 
             gray_output_path = output_path + file_name + '_gray/'
             make_dirs(gray_output_path)
@@ -638,6 +642,9 @@ def capture_visual_au_npys(input_path=ENTERFACE_DATA_PATH, output_path=ENTERFACE
         for file_name in os.listdir(input_path + _lab):
 
             if 'enterface' in input_path and 's6' in file_name:
+                continue;
+
+            if '.mp4' not in file_name:
                 continue;
         
             name = file_name.split('.')[0]
