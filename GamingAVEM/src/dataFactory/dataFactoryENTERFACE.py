@@ -10,7 +10,7 @@ if __name__ == '__main__':
     capture_visual_au_npys(input_path=ENTERFACE_DATA_PATH, output_path=output_path)
 
     output_path = get_visual_data_path('ENTERFACE_RGB')
-    capture_visual_npys1(input_path=ENTERFACE_DATA_PATH, output_path=output_path, class_labels=ENTERFACE_LABELS)
+    capture_visual_rgb_npys(input_path=ENTERFACE_DATA_PATH, output_path=output_path, class_labels=ENTERFACE_LABELS)
 
     #output_path = get_visual_data_path('ENTERFACE')
     #capture_visual_npys(input_path=ENTERFACE_DATA_PATH, output_path=output_path, class_labels=ENTERFACE_LABELS)

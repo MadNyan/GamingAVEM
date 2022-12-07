@@ -1,3 +1,4 @@
+from array import array
 import os
 import cv2
 import numpy as np
@@ -44,7 +45,7 @@ def crop_image_face(image, resize_x, resize_y):
         is_crop = True
     return is_crop, image
 
-def crop_image_face2(image, resize_x, resize_y):
+def crop_image_face_with_caffemodel(image, resize_x, resize_y):
     #是否已裁切
     is_crop = False
     (h, w) = image.shape[:2]
@@ -181,8 +182,8 @@ def key_frames_selector_with_fsim(frames, frames_range=3, strides=4, is_reverse=
                 continue
             m = fsim(frames[k], frames[k+1])
             # 初始化與紀錄最小值
-            if is_init == False or (is_reverse == False and max < m) or (is_reverse == True and max > m):
-                max = m
+            if is_init == False or (is_reverse == False and _max < m) or (is_reverse == True and _max > m):
+                _max = m
                 index = k
                 is_init = True
         key_frames.append(frames[index])
@@ -208,8 +209,8 @@ def key_frames_selector_with_ssim(frames, frames_range=3, strides=4, is_reverse=
                 continue
             m = ssim(frames[k], frames[k+1])
             # 初始化與紀錄最小值
-            if is_init == False or (is_reverse == False and max < m) or (is_reverse == True and max > m):
-                max = m
+            if is_init == False or (is_reverse == False and _max < m) or (is_reverse == True and _max > m):
+                _max = m
                 index = k
                 is_init = True
         key_frames.append(frames[index])
@@ -235,8 +236,8 @@ def key_frames_selector_with_fsm(frames, frames_range=3, strides=4, is_reverse=F
                 continue
             m = fsm(frames[k], frames[k+1])
             # 初始化與紀錄最小值
-            if is_init == False or (is_reverse == False and max < m) or (is_reverse == True and max > m):
-                max = m
+            if is_init == False or (is_reverse == False and _max < m) or (is_reverse == True and _max > m):
+                _max = m
                 index = k
                 is_init = True
         key_frames.append(frames[index])
@@ -298,8 +299,8 @@ def key_frames_selector_with_fsim_frames_count(frames, frames_count=10, is_rever
                 continue
             m = fsim(frames[k], frames[k+1])
             # 初始化與紀錄最小值
-            if is_init == False or (is_reverse == False and max < m) or (is_reverse == True and max > m):
-                max = m
+            if is_init == False or (is_reverse == False and _max < m) or (is_reverse == True and _max > m):
+                _max = m
                 index = k
                 is_init = True
         key_frames.append(frames[index])
@@ -328,8 +329,8 @@ def key_frames_selector_with_ssim_frames_count(frames, frames_count=10, is_rever
                 continue
             m = ssim(frames[k], frames[k+1])
             # 初始化與紀錄最小值
-            if is_init == False or (is_reverse == False and max < m) or (is_reverse == True and max > m):
-                max = m
+            if is_init == False or (is_reverse == False and _max < m) or (is_reverse == True and _max > m):
+                _max = m
                 index = k
                 is_init = True
         key_frames.append(frames[index])
@@ -358,8 +359,8 @@ def key_frames_selector_with_fsm_frames_count(frames, frames_count=10, is_revers
                 continue
             m = fsm(frames[k], frames[k+1])
             # 初始化與紀錄最小值
-            if is_init == False or (is_reverse == False and max < m) or (is_reverse == True and max > m):
-                max = m
+            if is_init == False or (is_reverse == False and _max < m) or (is_reverse == True and _max > m):
+                _max = m
                 index = k
                 is_init = True
         key_frames.append(frames[index])
@@ -407,7 +408,7 @@ def capture_visual_npy(input_path='', output_path='', file_name='default', time_
 
     _video_frames = []
     for i in range(0, len(video_frames)): #將影格裁切
-        is_crop, image = crop_image_face2(video_frames[i], resize_x, resize_y)
+        is_crop, image = crop_image_face_with_caffemodel(video_frames[i], resize_x, resize_y)
         if is_crop:
             _video_frames.append(image)
 
@@ -415,6 +416,7 @@ def capture_visual_npy(input_path='', output_path='', file_name='default', time_
 
     last_img = []
     imgs = []
+    new_video_frames = []
     csv = ''
     key_frames_range = key_frames_count
     if key_frames_count == 0:
@@ -432,9 +434,15 @@ def capture_visual_npy(input_path='', output_path='', file_name='default', time_
                 last_img.append(idp_image)           
             print('added no.' + str(indexes[i]) + ' frame')
             csv = csv + str(indexes[i]) + ','
-            make_dirs(output_path + '/' + file_name)
-            #cv2.imwrite(output_path + '/' + file_name + '/output' + str(indexes[i]) + '.png', key_frames[i]) 
-            cv2.imwrite(output_path + '/' + file_name + '/output' + str(indexes[i]) + '_gray.png', gray_scale) 
+
+            rgb_output_path = output_path + file_name + '_rgb/'
+            make_dirs(rgb_output_path)
+            cv2.imwrite(rgb_output_path + 'output' + str(indexes[i]) + '.png', key_frames[i])
+            new_video_frames.append(key_frames[i])
+
+            gray_output_path = output_path + file_name + '_gray/'
+            make_dirs(gray_output_path)
+            cv2.imwrite(gray_output_path + 'output' + str(indexes[i]) + '_gray.png', gray_scale)
         else:
             gray_scale = last_img[0]
             if to_local_binary_pattern:
@@ -459,9 +467,10 @@ def capture_visual_npy(input_path='', output_path='', file_name='default', time_
     if len(imgs) > 0:
         write_result(output_path + file_name + '.csv', csv)
         np.save(output_path + file_name + '.npy', np.array(imgs))
+        create_video(output_path=output_path + file_name + '.mp4', frames=new_video_frames)
     print(np.array(imgs).shape)
 
-def bind_visual_npys(input_path=ENTERFACE_VISUAL_NPY_DATA_PATH, output_path=ENTERFACE_VISUAL_NPY_DATA_PATH , class_labels=ENTERFACE_LABELS):
+def bind_visual_npys(input_path=ENTERFACE_VISUAL_NPY_DATA_PATH, output_path=ENTERFACE_VISUAL_NPY_DATA_PATH, class_labels=ENTERFACE_LABELS):
     
     file_name = get_labels_name(class_labels)
     x_path = output_path + file_name + 'x.npy'
@@ -491,6 +500,13 @@ def bind_visual_npys(input_path=ENTERFACE_VISUAL_NPY_DATA_PATH, output_path=ENTE
     np.save(x_path, data)
     np.save(y_path, labels)
     print('ended capturing')
+
+def create_video(output_path='', frames=[], resize_x=224, resize_y=224):
+    # 使用 OpenCV 將圖像轉換成影片
+    out = cv2.VideoWriter(output_path, cv2.VideoWriter_fourcc(*'MP4V'), 30, (resize_x, resize_y))
+    for frame in frames:
+        out.write(frame)
+    out.release()
 
 def get_mean_gray_scale(image):
     m, n, _ = image.shape
@@ -615,27 +631,6 @@ def get_interlaced_derivative_pattern(image, is_gray_scale=False):
  
     return idp_image
 
-def bubble_sort(arr1, is_desc=True):
-    n = len(arr1)
-    while n > 1:
-        n-=1
-        for k in range(n):
-            if (arr1[k] < arr1[k+1] and is_desc) or (arr1[k] > arr1[k+1] and is_desc == False):
-                arr1[k], arr1[k+1] = arr1[k+1], arr1[k]
-
-    return arr1
-
-def bubble_sort_2(arr1, arr2, is_desc=True):
-    n = len(arr1)
-    while n > 1:
-        n-=1
-        for k in range(n):
-            if (arr1[k] < arr1[k+1] and is_desc) or (arr1[k] > arr1[k+1] and is_desc == False):
-                arr1[k], arr1[k+1] = arr1[k+1], arr1[k]
-                arr2[k], arr2[k+1] = arr2[k+1], arr2[k]
-
-    return arr1, arr2
-
 def capture_visual_au_npys(input_path=ENTERFACE_DATA_PATH, output_path=ENTERFACE_VISUAL_AU_DATA_PATH):
     #time_F越小，取樣張數越多
     for lab in os.listdir(input_path):
@@ -688,7 +683,7 @@ def extract_features_OpenFace(file_name, input_path, openFace_path, out_path, st
         return True
     return False
 
-def capture_visual_npys1(input_path=ENTERFACE_DATA_PATH, output_path=ENTERFACE_VISUAL_NPY_DATA_PATH, class_labels=ENTERFACE_LABELS, time_F=1, resize_x=224, resize_y=224):
+def capture_visual_rgb_npys(input_path=ENTERFACE_DATA_PATH, output_path=ENTERFACE_VISUAL_NPY_DATA_PATH, class_labels=ENTERFACE_LABELS, time_F=1, resize_x=224, resize_y=224):
     #time_F越小，取樣張數越多
     for lab in os.listdir(input_path):
         _lab = lab + '/'
@@ -714,7 +709,7 @@ def capture_visual_npys1(input_path=ENTERFACE_DATA_PATH, output_path=ENTERFACE_V
             
             _video_frames = []
             for i in range(0, len(video_frames)): #將影格裁切
-                is_crop, image = crop_image_face2(video_frames[i], resize_x, resize_y)
+                is_crop, image = crop_image_face_with_caffemodel(video_frames[i], resize_x, resize_y)
                 if is_crop:
                     _video_frames.append(image)
             np.save(_output_path + file_name.split('.')[0] + '.npy', np.array(_video_frames))

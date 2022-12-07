@@ -17,7 +17,7 @@ if __name__ == '__main__':
     capture_visual_au_npys(input_path=GAVE_DATA_PATH, output_path=output_path)
 
     output_path = get_visual_data_path('GAVE_RGB')
-    capture_visual_npys1(input_path=GAVE_DATA_PATH, output_path=output_path, class_labels=GAVE_LABELS)
+    capture_visual_rgb_npys(input_path=GAVE_DATA_PATH, output_path=output_path, class_labels=GAVE_LABELS)
 
     #output_path = get_visual_data_path('GAVE')
     #capture_visual_npys(input_path=GAVE_DATA_PATH, output_path=output_path, class_labels=GAVE_LABELS)

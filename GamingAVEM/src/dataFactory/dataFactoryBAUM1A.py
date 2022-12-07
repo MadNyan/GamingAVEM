@@ -10,7 +10,7 @@ if __name__ == '__main__':
     capture_visual_au_npys(input_path=BAUM1A_DATA_PATH, output_path=output_path)
 
     output_path = get_visual_data_path('BAUM1A_RGB')
-    capture_visual_npys1(input_path=BAUM1A_DATA_PATH, output_path=output_path, class_labels=BAUM1A_LABELS)
+    capture_visual_rgb_npys(input_path=BAUM1A_DATA_PATH, output_path=output_path, class_labels=BAUM1A_LABELS)
 
     #output_path = get_visual_data_path('BAUM1A')
     #capture_visual_npys(input_path=BAUM1A_DATA_PATH, output_path=output_path, class_labels=BAUM1A_LABELS)
