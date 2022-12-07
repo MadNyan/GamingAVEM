@@ -63,6 +63,18 @@ VISUAL_NPY_SSIM_REVERSE_DATA_PATH = 'npy_ssim_reverse/'
 VISUAL_NPY_FSM_REVERSE_DATA_PATH = 'npy_fsm_reverse/'
 VISUAL_IMAGE_DATA_PATH = 'image/'
 VISUAL_AU_DATA_PATH = 'au/'
+VISUAL_AU_HISTOGRAM_DATA_PATH = 'au_histogram/'
+VISUAL_AU_FSIM_DATA_PATH = 'au_fsim/'
+VISUAL_AU_SSIM_DATA_PATH = 'au_ssim/'
+VISUAL_AU_FSM_DATA_PATH = 'au_fsm/'
+VISUAL_AU_HISTOGRAM_FRAMES_COUNT_DATA_PATH = 'au_histogram_frames_count/'
+VISUAL_AU_FSIM_FRAMES_COUNT_DATA_PATH = 'au_fsim_frames_count/'
+VISUAL_AU_SSIM_FRAMES_COUNT_DATA_PATH = 'au_ssim_frames_count/'
+VISUAL_AU_FSM_FRAMES_COUNT_DATA_PATH = 'au_fsm_frames_count/'
+VISUAL_AU_HISTOGRAM_REVERSE_DATA_PATH = 'au_histogram_reverse/'
+VISUAL_AU_FSIM_REVERSE_DATA_PATH = 'au_fsim_reverse/'
+VISUAL_AU_SSIM_REVERSE_DATA_PATH = 'au_ssim_reverse/'
+VISUAL_AU_FSM_REVERSE_DATA_PATH = 'au_fsm_reverse/'
 
 ENTERFACE_DATA_PATH = AUDIO_VISUAL_DATA_PATH + 'enterface/'
 ENTERFACE_AUDIO_DATA_PATH = AUDIO_DATA_PATH + 'enterface/'
@@ -279,8 +291,26 @@ def get_visual_data_path(Datasets):
     elif '64x64' in Datasets:
         path = path + VISUAL_SIZE_64x64_DATA_PATH
 
-        
-    if '_HISTOGRAM_REVERSE' in Datasets:
+    
+    if '_AU' in Datasets:
+        path = path + VISUAL_AU_DATA_PATH
+    elif '_AU_HISTOGRAM_FRAMES_COUNT' in Datasets:
+        path = path + VISUAL_AU_HISTOGRAM_FRAMES_COUNT_DATA_PATH
+    elif '_AU_FSIM_FRAMES_COUNT' in Datasets:
+        path = path + VISUAL_AU_FSIM_FRAMES_COUNT_DATA_PATH
+    elif '_AU_SSIM_FRAMES_COUNT' in Datasets:
+        path = path + VISUAL_AU_SSIM_FRAMES_COUNT_DATA_PATH
+    elif '_AU_FSM_FRAMES_COUNT' in Datasets:
+        path = path + VISUAL_AU_FSM_FRAMES_COUNT_DATA_PATH
+    elif '_AU_HISTOGRAM' in Datasets:
+        path = path + VISUAL_AU_HISTOGRAM_DATA_PATH
+    elif '_AU_FSIM' in Datasets:
+        path = path + VISUAL_AU_FSIM_DATA_PATH
+    elif '_AU_SSIM' in Datasets:
+        path = path + VISUAL_AU_SSIM_DATA_PATH
+    elif '_AU_FSM' in Datasets:
+        path = path + VISUAL_AU_FSM_DATA_PATH 
+    elif '_HISTOGRAM_REVERSE' in Datasets:
         path = path + VISUAL_NPY_HISTOGRAM_REVERSE_DATA_PATH
     elif '_FSIM_REVERSE' in Datasets:
         path = path + VISUAL_NPY_FSIM_REVERSE_DATA_PATH
@@ -304,8 +334,6 @@ def get_visual_data_path(Datasets):
         path = path + VISUAL_NPY_SSIM_DATA_PATH
     elif '_FSM' in Datasets:
         path = path + VISUAL_NPY_FSM_DATA_PATH
-    elif '_AU' in Datasets:
-        path = path + VISUAL_AU_DATA_PATH
     elif '_RGB' in Datasets:
         path = path + VISUAL_NPY_RGB_DATA_PATH
     else:
