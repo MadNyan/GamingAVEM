@@ -14,7 +14,7 @@ ENTERFACE_LABELS = ('an', 'ha', 'sa', 'su', 'di', 'fe')
 # 憤怒、快樂、悲傷、驚訝、厭惡、恐懼、中立、無聊、煩惱、集中、蔑視、思考、不確定
 BAUM1S_LABELS = ('an', 'ha', 'sa', 'su', 'di', 'fe', 'ne', 'bor', 'bot', 'conc', 'cont', 'th', 'un')
 BAUM1S_LABELS = ('an', 'ha', 'sa', 'su', 'di', 'fe', 'ne', 'bor', 'bot', 'conc', 'cont', 'th')
-BAUM1S_LABELS = ('an', 'ha', 'sa', 'su', 'bor', 'bot')
+#BAUM1S_LABELS = ('an', 'ha', 'sa', 'su', 'bor', 'bot')
 #BAUM1S_LABELS = ('an', 'ha', 'sa', 'su', 'di', 'fe', 'ne')
 # anger, happiness, sadness, disgust, fear, boredom, unsure, Interest
 # 憤怒、快樂、悲傷、厭惡、恐懼、無聊、不確定、感興趣
