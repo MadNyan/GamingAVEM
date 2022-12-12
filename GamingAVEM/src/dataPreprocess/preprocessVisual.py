@@ -399,7 +399,7 @@ def capture_visual_npys(input_path=ENTERFACE_DATA_PATH, output_path=ENTERFACE_VI
 
             print('ended capturing ' + name)            
 
-    bind_visual_npys(input_path=output_path, output_path=output_path, class_labels=class_labels)
+    #bind_visual_npys(input_path=output_path, output_path=output_path, class_labels=class_labels)
 
 def capture_visual_npy(input_path='', output_path='', file_name='default', time_F=1, resize_x=224, resize_y=224, 
                        to_local_binary_pattern=False, to_interlaced_derivative_pattern=False, selector='',is_reverse=False , key_frames_count=0):
@@ -639,6 +639,10 @@ def get_interlaced_derivative_pattern(image, is_gray_scale=False):
 def capture_visual_au_npys(input_path=ENTERFACE_DATA_PATH, output_path=ENTERFACE_VISUAL_AU_DATA_PATH):
     #time_F越小，取樣張數越多
     for lab in os.listdir(input_path):
+
+        if '.txt' in lab:
+            continue;
+
         _lab = lab + '/'
         for file_name in os.listdir(input_path + _lab):
 
