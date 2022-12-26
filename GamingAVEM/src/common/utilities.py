@@ -235,6 +235,17 @@ def get_dataset_name(Datasets):
         dataset_name = 'GAVE'
     return dataset_name
 
+def get_dataset_nickname(Datasets):
+    dataset_name = get_dataset_name(Datasets)
+    return{ 
+        'BAUM1S':'bs', 
+        'BAUM1A':'ba', 
+        'ENTERFACE':'en', 
+        'RAVDESS':'ra', 
+        'SAVEE':'sa',        
+        'GAVE':'ga'
+    }.get(dataset_name, 'not')
+
 def get_data_path(Datasets):
     path=''
     if 'ENTERFACE' in Datasets:

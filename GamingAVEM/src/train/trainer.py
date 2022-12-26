@@ -12,7 +12,9 @@ from src.dataPreprocess.preprocessAudio import *
 
 class trainer(object):
     def __init__(self, results_path: str, dataset_name: str,
-                 epochs: int, batch_size: int, learn_rate: float, gradient_accumulation_steps: int, is_transfer: bool, fold: str):
+                 epochs: int, batch_size: int, learn_rate: float, 
+                 gradient_accumulation_steps: int, is_transfer: bool, 
+                 load_path: str, save_path: str, img_path: str, nickname: str fold: str):
         super(trainer, self).__init__()
         self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
@@ -23,6 +25,13 @@ class trainer(object):
         self.learn_rate = learn_rate
         self.gradient_accumulation_steps = gradient_accumulation_steps
         self.is_transfer = is_transfer
+        self.load_path = load_path
+        self.save_path = save_path
+        if img_path == '':
+            self.img_path = self.results_path + '/' + self.get_title() + '_' + str(self.is_transfer) + '/'
+        else:
+            self.img_path = img_path
+        self.nickname = nickname
         self.fold = fold        
         
         self.data_labels = get_data_labels(self.dataset_name)
@@ -43,22 +52,20 @@ class trainer(object):
     def train_model(self):
         title = self.get_title()
         if self.is_transfer:
-            self.load_model()
+            self.load_model(self.load_path)
 
         make_dirs(self.results_path)
-        csv = 'TYPE,FOLD,IS TRANSFER,MODEL,DATASET,NUM CLASSES,MAX VAL ACCURACY,MIN VAL ACCURACY,TEST ACCURACY,TIME COST\n'
+        csv = 'TYPE,FOLD,IS TRANSFER,MODEL,DATASET,NUM CLASSES,MAX VAL ACCURACY,TEST ACCURACY,SAVE PATH,TIME COST\n'
     
         training_timepoint_start, _ = get_timepoint()
         history = self.training(self.model, self.train_loader, self.val_loader, self.epochs, self.gradient_accumulation_steps, self.loss_func, self.optimizer, self.scheduler)
         training_timepoint_end, _ = get_timepoint()
         _, time_cost_msg = get_time_cost(training_timepoint_start, training_timepoint_end)
-
-        img_path = self.results_path + '/' + self.get_title() + '_' + str(self.is_transfer) + '/'
-        make_dirs(img_path)
-        plot_history_table(history['accuracy'], history['val_accuracy'], history['loss'], history['val_loss'], title=title, index=self.fold, path=img_path)
+        
+        make_dirs(self.img_path)
+        plot_history_table(history['accuracy'], history['val_accuracy'], history['loss'], history['val_loss'], title=title, index=self.fold, path=self.img_path)
 
         max_val_accuracy = max(history['val_accuracy'])
-        min_val_accuracy = min(history['val_accuracy'])
         
         test_accuracy, y_pred, y_true = self.testing(self.model, self.test_loader)
 
@@ -66,13 +73,13 @@ class trainer(object):
             csv = read_result(self.results_path + '/acc.csv')
             
         print('Training_time_cost: {}'.format(time_cost_msg))
-        csv += '{},{},{},{},{},{:d},{:.4f},{:.4f},{:.4f},{}\n'.format(self.model_type, self.fold, str(self.is_transfer), self.model_name, self.dataset_name, self.num_classes, max_val_accuracy, min_val_accuracy, test_accuracy, time_cost_msg)
+        csv += '{},{},{},{},{},{:d},{:.4f},{:.4f},{},{}\n'.format(self.model_type, self.fold, str(self.is_transfer), self.model_name, self.dataset_name, self.num_classes, max_val_accuracy, test_accuracy, self.save_path, time_cost_msg)
 
         matrix = confusion_matrix(y_pred=y_pred, y_true=y_true)
-        plot_confusion_matrix(matrix, class_labels=self.data_labels, normalize=True, title=title, index=self.fold, path=img_path)
+        plot_confusion_matrix(matrix, class_labels=self.data_labels, normalize=True, title=title, index=self.fold, path=self.img_path)
         
         write_result(self.results_path + '/acc.csv', csv)
-        self.save_model()
+        self.save_model(self.save_path)
 
     def training(self, model: nn.Module, train_loader: TensorDataset, val_loader: TensorDataset, epochs: int, gradient_accumulation_steps: int, loss_func: torch.nn.modules.loss, optimizer: torch.optim, scheduler: torch.optim.lr_scheduler):
         model = model.to(self.device)
@@ -189,7 +196,8 @@ class trainer(object):
         if os.path.isfile(path) == True:
             self.model = torch.load(path)
             is_load = True
-        return is_load
+            return is_load
+        raise ValueError()
 
     def save_feature(self, train_feature: np.ndarray, val_feature: np.ndarray, test_feature: np.ndarray):
         path = self.results_path + '/' + self.get_title() + '_' + self.fold + '_train_feature.npy'
@@ -206,7 +214,9 @@ class trainer(object):
         raise NotImplementedError()
 
     def get_title(self):
-        return self.model_name + '_' + self.dataset_name
+        if self.nickname == '':
+            return self.model_name + '_' + self.dataset_name
+        return self.nickname
 
     def get_save_path(self):
         title = self.get_title()

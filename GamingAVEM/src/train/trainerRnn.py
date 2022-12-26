@@ -10,8 +10,8 @@ from src.train.trainer import trainer
 
 class trainerRnn(trainer):
     def __init__(self, results_path: str, dataset_name: str, x_train: np.ndarray, x_val: np.ndarray, x_test: np.ndarray, y_train: np.ndarray, y_val: np.ndarray, y_test: np.ndarray, 
-                 epochs: int, batch_size: int, learn_rate: float, gradient_accumulation_steps: int, is_transfer: bool, fold: str):
-        super(trainerRnn, self).__init__(results_path, dataset_name, epochs, batch_size, learn_rate, gradient_accumulation_steps, is_transfer, fold)
+                 epochs: int, batch_size: int, learn_rate: float, gradient_accumulation_steps: int, is_transfer: bool, load_path: str, save_path: str, img_path: str, nickname: str fold: str):
+        super(trainerRnn, self).__init__(results_path, dataset_name, epochs, batch_size, learn_rate, gradient_accumulation_steps, is_transfer, load_path, save_path, img_path, nickname, fold)
 
         # 資料集
         self.train_loader, self.val_loader, self.test_loader = self.get_dataset(x_train, x_val, x_test, y_train, y_val, y_test, self.num_classes, self.batch_size)
@@ -139,8 +139,8 @@ class trainerRnn(trainer):
 
 class trainerLstm(trainerRnn):
     def __init__(self, results_path: str, dataset_name: str, x_train: np.ndarray, x_val: np.ndarray, x_test: np.ndarray, y_train: np.ndarray, y_val: np.ndarray, y_test: np.ndarray, 
-                 epochs: int = 100, batch_size: int = 64, learn_rate: float = 1e-3, gradient_accumulation_steps: int = 1, is_transfer: bool = False, fold: str = ''):
-        super(trainerLstm, self).__init__(results_path, dataset_name, x_train, x_val, x_test, y_train, y_val, y_test, epochs, batch_size, learn_rate, gradient_accumulation_steps, is_transfer, fold)
+                 epochs: int = 100, batch_size: int = 64, learn_rate: float = 1e-3, gradient_accumulation_steps: int = 1, is_transfer: bool = False, load_path: str = '', save_path: str = '', img_path: str = '', nickname:str = '', fold: str = ''):
+        super(trainerLstm, self).__init__(results_path, dataset_name, x_train, x_val, x_test, y_train, y_val, y_test, epochs, batch_size, learn_rate, gradient_accumulation_steps, is_transfer, load_path, save_path, img_path, nickname, fold)
         self.model_name = 'Lstm'
 
     def init_model(self):
@@ -148,8 +148,8 @@ class trainerLstm(trainerRnn):
 
 class trainerGru(trainerRnn):
     def __init__(self, results_path: str, dataset_name: str, x_train: np.ndarray, x_val: np.ndarray, x_test: np.ndarray, y_train: np.ndarray, y_val: np.ndarray, y_test: np.ndarray, 
-                 epochs: int = 100, batch_size: int = 64, learn_rate: float = 1e-3, gradient_accumulation_steps: int = 1, is_transfer: bool = False, fold: str = ''):
-        super(trainerGru, self).__init__(results_path, dataset_name, x_train, x_val, x_test, y_train, y_val, y_test, epochs, batch_size, learn_rate, gradient_accumulation_steps, is_transfer, fold)
+                 epochs: int = 100, batch_size: int = 64, learn_rate: float = 1e-3, gradient_accumulation_steps: int = 1, is_transfer: bool = False, load_path: str = '', save_path: str = '', img_path: str = '', nickname:str = '', fold: str = ''):
+        super(trainerGru, self).__init__(results_path, dataset_name, x_train, x_val, x_test, y_train, y_val, y_test, epochs, batch_size, learn_rate, gradient_accumulation_steps, is_transfer, load_path, save_path, img_path, nickname, fold)
         self.model_name = 'Gru'
 
     def init_model(self):

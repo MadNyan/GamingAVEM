@@ -10,12 +10,16 @@ from src.train.trainer import trainer
 
 class trainerFusion(trainer):
     def __init__(self, results_path: str, dataset_name: str, 
-                 visual_model: str, audio_model: str, y_train: np.ndarray, y_val: np.ndarray, y_test: np.ndarray, 
-                 epochs: int = 100, batch_size: int = 64, learn_rate: float = 1e-3, gradient_accumulation_steps: int = 1, is_transfer: bool = False, fold: str = ''):
-        super(trainerFusion, self).__init__(results_path, dataset_name, epochs, batch_size, learn_rate, gradient_accumulation_steps, is_transfer, fold)
+                 visual_model: str, audio_model: str,
+                 visual_train_feature: np.ndarray, visual_val_feature: np.ndarray, visual_test_feature: np.ndarray,
+                 audio_train_feature: np.ndarray, audio_val_feature: np.ndarray, audio_test_feature: np.ndarray,
+                 y_train: np.ndarray, y_val: np.ndarray, y_test: np.ndarray, 
+                 epochs: int = 100, batch_size: int = 64, learn_rate: float = 1e-3, gradient_accumulation_steps: int = 1, 
+                 is_transfer: bool = False, load_path: str = '', save_path: str = '', img_path: str = '', nickname:str = '', fold: str = ''):
+        super(trainerFusion, self).__init__(results_path, dataset_name, epochs, batch_size, learn_rate, gradient_accumulation_steps, is_transfer, load_path, save_path, img_path, nickname, fold)
         
         # 資料集
-        visual_train_feature, visual_val_feature, visual_test_feature, audio_train_feature, audio_val_feature, audio_test_feature = self.load_feature(visual_model, audio_model)
+        #visual_train_feature, visual_val_feature, visual_test_feature, audio_train_feature, audio_val_feature, audio_test_feature = self.load_feature(visual_model, audio_model)
         self.train_loader, self.val_loader, self.test_loader = self.get_dataset(visual_train_feature, visual_val_feature, visual_test_feature, audio_train_feature, audio_val_feature, audio_test_feature, y_train, y_val, y_test, self.num_classes, batch_size)
         self.model_name = visual_model + '_' + audio_model
         self.model_type = 'Fusion'
@@ -37,12 +41,12 @@ class trainerFusion(trainer):
         return outputs, labels_one_hot
     
     def get_dataset(self, visual_train_feature: np.ndarray, visual_val_feature: np.ndarray, visual_test_feature: np.ndarray, audio_train_feature: np.ndarray, audio_val_feature: np.ndarray, audio_test_feature: np.ndarray, y_train: np.ndarray, y_val: np.ndarray, y_test: np.ndarray, num_classes: int, batch_size: int = 64):
-        visual_train_feature = torch.from_numpy(visual_train_feature.astype(np.float32))
-        visual_val_feature = torch.from_numpy(visual_val_feature.astype(np.float32))
-        visual_test_feature = torch.from_numpy(visual_test_feature.astype(np.float32))
-        audio_train_feature = torch.from_numpy(audio_train_feature.astype(np.float32))
-        audio_val_feature = torch.from_numpy(audio_val_feature.astype(np.float32))
-        audio_test_feature = torch.from_numpy(audio_test_feature.astype(np.float32))
+        #visual_train_feature = torch.from_numpy(visual_train_feature.astype(np.float32))
+        #visual_val_feature = torch.from_numpy(visual_val_feature.astype(np.float32))
+        #visual_test_feature = torch.from_numpy(visual_test_feature.astype(np.float32))
+        #audio_train_feature = torch.from_numpy(audio_train_feature.astype(np.float32))
+        #audio_val_feature = torch.from_numpy(audio_val_feature.astype(np.float32))
+        #audio_test_feature = torch.from_numpy(audio_test_feature.astype(np.float32))
         
         y_train = torch.from_numpy(y_train.astype(np.int64))
         y_val = torch.from_numpy(y_val.astype(np.int64))

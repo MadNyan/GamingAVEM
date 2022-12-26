@@ -11,18 +11,25 @@ from src.train.trainerWav2vec2 import trainerWav2vec2
 from src.train.trainerDFLN_BiLstm import trainerDFLN_BiLstm
 from src.train.trainerFAN import trainerFAN
 from src.train.trainerUniSpeech import trainerUniSpeech
-from src.train.trainerFusion import trainerFusion
 
 if __name__ == '__main__': 
     
-    model = 'Lstm'
-    results_path = './results/test'
-    dataset_name = 'GAVE_AU'
+    datasets = 'en_ra'
+
+    model = 'Wav2vec2'
+    results_path = './results/test_au'
+    dataset_name = 'RAVDESS_AU'
     epochs = 1
-    batch_size = 64
+    batch_size = 1
     learn_rate = 1e-4
-    gradient_accumulation_steps = 1
+    gradient_accumulation_steps = 8
+    is_transfer = False
+    load_path = ''
     is_transfer = True
+    load_path = './results/test_au/Wav2vec2_en.pth'
+    save_path = results_path + '/' + model + '_' + datasets + '.pth'
+    img_path = results_path + '/' + datasets + '/'
+    nickname = model + '_' + datasets
     is_fold = False
     fold = 0
     fold_name = ''
@@ -51,6 +58,18 @@ if __name__ == '__main__':
     parser.add_argument('-transfer', '--is_transfer', type=bool, 
                         help='Transfer',
                         default=False)
+    parser.add_argument('-load_path', '--load_path', type=str, 
+                        help='Load path',
+                        default='')
+    parser.add_argument('-save_path', '--save_path', type=str, 
+                        help='Save path',
+                        default='')
+    parser.add_argument('-img_path', '--img_path', type=str, 
+                        help='Image path',
+                        default='')
+    parser.add_argument('-nickname', '--nickname', type=str, 
+                        help='Nickname',
+                        default='')
     parser.add_argument('-is_fold', '--is_fold', type=bool, 
                         help='Is fold',
                         default=False)
@@ -67,6 +86,10 @@ if __name__ == '__main__':
     learn_rate = args.learn_rate
     gradient_accumulation_steps = args.accumulation_steps
     is_transfer = args.is_transfer
+    load_path = args.load_path
+    save_path = args.save_path
+    nickname = args.nickname
+    img_path = args.img_path
     is_fold = args.is_fold
     fold = args.fold
 
@@ -99,34 +122,22 @@ if __name__ == '__main__':
             x_visual_test, x_audio_test = split_visual_audio_data(x_test)
 
         if model == 'Lstm':
-            trainer = trainerLstm(results_path, dataset_name, x_visual_train, x_visual_val, x_visual_test, y_train, y_val, y_test, epochs, batch_size, learn_rate, gradient_accumulation_steps, is_transfer, fold_name)
+            trainer = trainerLstm(results_path, dataset_name, x_visual_train, x_visual_val, x_visual_test, y_train, y_val, y_test, epochs, batch_size, learn_rate, gradient_accumulation_steps, is_transfer, load_path, save_path, img_path, nickname, fold_name)
             trainer.train_model()
-            train_feature, val_feature, test_feature = trainer.get_feature(trainer.model, x_visual_train, x_visual_val, x_visual_test)
-            trainer.save_feature(train_feature, val_feature, test_feature)
         elif model == 'Gru':
-            trainer = trainerGru(results_path, dataset_name, x_visual_train, x_visual_val, x_visual_test, y_train, y_val, y_test, epochs, batch_size, learn_rate, gradient_accumulation_steps, is_transfer, fold_name)
+            trainer = trainerGru(results_path, dataset_name, x_visual_train, x_visual_val, x_visual_test, y_train, y_val, y_test, epochs, batch_size, learn_rate, gradient_accumulation_steps, is_transfer, load_path, save_path, img_path, nickname, fold_name)
             trainer.train_model()
-            train_feature, val_feature, test_feature = trainer.get_feature(trainer.model, x_visual_train, x_visual_val, x_visual_test)
-            trainer.save_feature(train_feature, val_feature, test_feature)
         elif model == 'DFLN_BiLstm':
-            trainer = trainerDFLN_BiLstm(results_path, dataset_name, x_visual_train, x_visual_val, x_visual_test, y_train, y_val, y_test, epochs, batch_size, learn_rate, gradient_accumulation_steps, is_transfer, fold_name)
+            trainer = trainerDFLN_BiLstm(results_path, dataset_name, x_visual_train, x_visual_val, x_visual_test, y_train, y_val, y_test, epochs, batch_size, learn_rate, gradient_accumulation_steps, is_transfer, load_path, save_path, img_path, nickname, fold_name)
             trainer.train_model()
-            train_feature, val_feature, test_feature = trainer.get_feature(trainer.model, x_visual_train, x_visual_val, x_visual_test)
-            trainer.save_feature(train_feature, val_feature, test_feature)
         elif model == 'FAN':
-            trainer = trainerFAN(results_path, dataset_name, x_visual_train, x_visual_val, x_visual_test, y_train, y_val, y_test, epochs, batch_size, learn_rate, gradient_accumulation_steps, is_transfer, fold_name)
+            trainer = trainerFAN(results_path, dataset_name, x_visual_train, x_visual_val, x_visual_test, y_train, y_val, y_test, epochs, batch_size, learn_rate, gradient_accumulation_steps, is_transfer, load_path, save_path, img_path, nickname, fold_name)
             trainer.train_model()
-            train_feature, val_feature, test_feature = trainer.get_feature(trainer.model, x_visual_train, x_visual_val, x_visual_test)
-            trainer.save_feature(train_feature, val_feature, test_feature)
         elif model == 'Wav2vec2':
-            trainer = trainerWav2vec2(results_path, dataset_name, x_audio_train, x_audio_val, x_audio_test, y_train, y_val, y_test, epochs, batch_size, learn_rate, gradient_accumulation_steps, is_transfer, fold_name)
+            trainer = trainerWav2vec2(results_path, dataset_name, x_audio_train, x_audio_val, x_audio_test, y_train, y_val, y_test, epochs, batch_size, learn_rate, gradient_accumulation_steps, is_transfer, load_path, save_path, img_path, nickname, fold_name)
             trainer.train_model()
-            train_feature, val_feature, test_feature = trainer.get_feature(trainer.model, x_audio_train, x_audio_val, x_audio_test)
-            trainer.save_feature(train_feature, val_feature, test_feature)
         elif model == 'UniSpeech':
-            trainer = trainerUniSpeech(results_path, dataset_name, x_audio_train, x_audio_val, x_audio_test, y_train, y_val, y_test, epochs, batch_size, learn_rate, gradient_accumulation_steps, is_transfer, fold_name, 'microsoft/unispeech-1350-en-353-fr-ft-1h')
+            trainer = trainerUniSpeech(results_path, dataset_name, x_audio_train, x_audio_val, x_audio_test, y_train, y_val, y_test, epochs, batch_size, learn_rate, gradient_accumulation_steps, is_transfer, load_path, save_path, img_path, nickname, fold_name, 'microsoft/unispeech-1350-en-353-fr-ft-1h')
             trainer.train_model()
-            train_feature, val_feature, test_feature = trainer.get_feature(trainer.model, x_audio_train, x_audio_val, x_audio_test)
-            trainer.save_feature(train_feature, val_feature, test_feature)
         else:
             print('not found model')
